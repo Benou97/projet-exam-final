@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" >
+    <link rel = "icon" href = "WebschoolLogo-PNG.png"/>
+    <title>Liste des étudiants</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .actions button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .actions button:hover {
+            background-color: #004080;
+        }
+        
+        .student-card {
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 300px;
+        }
+        .student-card h2 {
+            margin-bottom: 10px;
+        }
+        .student-card p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Liste des étudiants</h1>
+    </header>
+    
+    <table id="listeEtudiantsTable">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Nom de la Formation</th>
+                <th>Tehudat Zeout</th>
+                <th>Date d'Expiration</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="listeEtudiantsBody">
+            
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        function afficherListeEtudiants() {
+            
+            let etudiants = JSON.parse(localStorage.getItem('etudiants')) || [];
+
+            
+            let listeEtudiantsBody = $('#listeEtudiantsBody');
+            
+            listeEtudiantsBody.empty();
+            etudiants.forEach(function(etudiant) {
+                listeEtudiantsBody.append(`<tr>
+                    <td>${etudiant.nom}</td>
+                    <td>${etudiant.cours}</td>
+                    <td>${etudiant.carte}</td>
+                    <td>${etudiant.date}</td>
+                    <td class="actions">
+                        <button onclick="creerCarte(${etudiant.id})">Création de carte</button>
+                        <button onclick="supprimerEtudiant(${etudiant.id})">X</button>
+                    </td>
+                </tr>`);
+            });
+        }
+
+        
+        function creerCarte(id) {
+            
+            let etudiantID = id.split('_')[1]; 
+            let etudiant = JSON.parse(localStorage.getItem('etudiants')).find(e => e.id === parseInt(etudiantID));
+
+            
+            let studentCard = document.createElement('div');
+            studentCard.classList.add('student-card');
+
+            
+            studentCard.innerHTML = `
+                <h2>${etudiant.nom}</h2>
+                <p><strong>Nom de la Formation:</strong> ${etudiant.cours}</p>
+                <p><strong>Tehudat Zeout:</strong> ${etudiant.carte}</p>
+                <p><strong>Date d'Expiration:</strong> ${etudiant.date}</p>
+            `;
+
+            
+            document.body.appendChild(studentCard);
+        }
+
+    
+        function supprimerEtudiant(id) {
+            
+            let etudiants = JSON.parse(localStorage.getItem('etudiants')) || [];
+
+            
+            etudiants = etudiants.filter(etudiant => etudiant.id !== parseInt(id));
+
+            
+            localStorage.setItem('etudiants', JSON.stringify(etudiants));
+
+            
+            afficherListeEtudiants();
+        }
+
+        
+        $(document).ready(function() {
+            afficherListeEtudiants();
+        });
+    </script>
+</body>
+</html>
+
+
+

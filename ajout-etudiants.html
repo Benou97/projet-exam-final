@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "icon" href = "WebschoolLogo-PNG.png"/>
+    <title>Webschool</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        #logo {
+            display: block;
+            margin: auto;
+            width: 150px;
+            height: auto;
+        }
+        form {
+            background-color: #007bff; 
+            color: white; 
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="date"] {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form input[type="submit"] {
+            background-color: #0056b3; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form input[type="submit"]:hover {
+            background-color: #004080; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="logo" src="https://i.imgur.com/QqzHxHu.png" alt="Webschool Logo">
+        <h1>Ajout d'étudiant</h1>
+    </header>
+    
+    <form id="ajoutEtudiantForm">
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" required><br>
+        <label for="cours">Nom de la Formation:</label>
+        <input type="text" id="cours" name="cours" required><br>
+        <label for="carte">Tehudat Zeout:</label>
+        <input type="number" id="carte" name="carte" required><br>
+        <label for="date">Date d'Expiration:</label>
+        <input type="date" id="date" name="date" required><br>
+        <input type="submit" value="Ajouter">
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#ajoutEtudiantForm').submit(function(e) {
+                e.preventDefault(); 
+
+                
+                let nom = $('#nom').val();
+                let cours = $('#cours').val();
+                let carte = $('#carte').val();
+                let date = $('#date').val();
+
+                
+                ajouterEtudiant(nom, cours, carte, date);
+            });
+        });
+
+        function ajouterEtudiant(nom, cours, carte, date) {
+            
+            let etudiants = JSON.parse(localStorage.getItem('etudiants')) || [];
+            
+            
+            let nouvelEtudiant = {
+                id: Date.now(), 
+                nom: nom,
+                cours: cours,
+                carte: carte,
+                date: date
+            };
+
+            
+            etudiants.push(nouvelEtudiant);
+
+            
+            localStorage.setItem('etudiants', JSON.stringify(etudiants));
+
+            
+            alert("Étudiant bien ajouté!");
+
+            
+            window.location.href = "liste-etudiants.html";
+        }
+    </script>
+</body>
+</html>
+
+
